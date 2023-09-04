@@ -16,9 +16,9 @@ export class RegistrationPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private toast:ToastService,
-    private apiHelperService:ApiService,
-    private router:Router) {
+    private toast: ToastService,
+    private apiHelperService: ApiService,
+    private router: Router) {
     this.signupForm = this.formBuilder.group({
       name: ['', Validators.required],
       username: ['', Validators.required],
@@ -32,18 +32,18 @@ export class RegistrationPage implements OnInit {
     if (this.signupForm.valid) {
       const formData = this.signupForm.value;
       if (formData.password !== formData.confirmPassword) {
-        this.toast.showToast('Password Not Matched!','danger');
+        this.toast.showToast('Password Not Matched!', 'danger');
         return;
       }
-      this.apiHelperService.post(`users/signup`,formData).subscribe((response)=>{
-        if(response){
-          this.toast.showToast(response.msg,'success');
+      this.apiHelperService.post(`users/signup`, formData).subscribe((response) => {
+        if (response) {
+          this.toast.showToast(response.msg, 'success');
           this.router.navigate(['login']);
         }
       });
 
     } else {
-      this.toast.showToast('Information is not valid!','danger');
+      this.toast.showToast('Information is not valid!', 'danger');
     }
   }
 
