@@ -11,20 +11,17 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from './users.service';
 import { LocalAuthGuard } from 'src/guards/local.auth.guard';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
+import { IUser } from 'src/interface/user.interface';
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
     @Post('/signup')
     async addUser(
-        @Body('password') userPassword: string,
-        @Body('username') userName: string,
+        @Body() user: IUser,
     ) {
         const saltOrRound = 10;
-        const hashedPassword = await bcrypt.hash(userPassword, saltOrRound);
-        const result = await this.usersService.insertUser(
-            userName,
-            hashedPassword,
-        );
+        user.password = await bcrypt.hash(user.password, saltOrRound);
+        const result = await this.usersService.insertUser(user);
         return {
             msg: 'User successfully registered',
             userId: result.id,
