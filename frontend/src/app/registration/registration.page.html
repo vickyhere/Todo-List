@@ -7,26 +7,41 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form>
+  <form [formGroup]="signupForm" (ngSubmit)="signup()">
     <ion-item lines="full">
       <ion-label position="floating">Name</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" required formControlName="name"></ion-input>
+      <div class="danger" *ngIf="signupForm.get('name')?.hasError('required') && signupForm.get('name')?.touched">
+        Name is required!
+      </div>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">User Name</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" required formControlName="username"></ion-input>
+      <div class="danger" *ngIf="signupForm.get('username')?.hasError('required') && signupForm.get('username')?.touched">
+        User Name is required!
+      </div>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" required formControlName="email"></ion-input>
+      <div class="danger" *ngIf="signupForm.get('email')?.hasError('required') && signupForm.get('email')?.touched">
+        Email is required!
+      </div>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" required formControlName="password"></ion-input>
+      <div class="danger" *ngIf="signupForm.get('password')?.hasError('required') && signupForm.get('password')?.touched">
+        Password is required!
+      </div>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Confirm Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" required formControlName="confirmPassword"></ion-input>
+      <div class="danger" *ngIf="signupForm.get('confirmPassword')?.hasError('required') && signupForm.get('confirmPassword')?.touched">
+        Confirm Password is required!
+      </div>
     </ion-item>
     <ion-row>
       <ion-col>
