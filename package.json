@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "start": "concurrently \"cd project-name-backend && npm start\" \"cd project-name-frontend && ionic serve\""
+        "start": "concurrently \"cd backend && npm start\" \"cd frontend && ionic serve\""
     },
     "devDependencies": {
         "concurrently": "^8.2.1"
