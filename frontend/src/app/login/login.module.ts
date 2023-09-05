@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../services/api-helper.service';
 import { ToastService } from '../services/toast.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { StorageService } from '../services/storage.service';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     IonicStorageModule.forRoot()
   ],
   declarations: [LoginPage],
-  providers: [ToastService, ApiService]
+  providers: [ToastService, ApiService,StorageService]
 })
 export class LoginPageModule { }

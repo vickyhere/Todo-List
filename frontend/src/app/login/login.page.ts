@@ -5,6 +5,7 @@ import { ToastService } from '../services/toast.service';
 import { Router } from '@angular/router';
 import { IUser } from '../interface/IUser';
 import { Storage } from '@ionic/storage';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginPage {
     private formBuilder: FormBuilder,
     private toastService: ToastService,
     private apiHelperService: ApiService,
-    private storage: Storage,
+    private storageService: StorageService,
     private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -34,8 +35,7 @@ export class LoginPage {
         .subscribe((res) => {
           if (res.user) {
             const user = res.user as IUser;
-            this.storage.create();
-            this.storage.set('user', user);
+            this.storageService.create(user);
             this.router.navigate(['todo']);
             this.toastService.showToast(res.msg, 'success');
           } else {
@@ -45,6 +45,13 @@ export class LoginPage {
     }
     else {
       this.toastService.showToast(`Infomration not valid!`, 'danger');
+    }
+  }
+
+  async ngOnInit() {
+    const user = await this.storageService.get();
+    if (user) {
+      this.router.navigate(['todo']);
     }
   }
 
