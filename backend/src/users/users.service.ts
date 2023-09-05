@@ -12,9 +12,8 @@ export class UsersService {
     await user.save();
     return user;
   }
-  async getUser(userName: string) {
-    const username = userName.toLowerCase();
-    const user = await this.userModel.findOne({ username });
+  async getUser(email: string) {
+    const user = await this.userModel.findOne({ email });
     return user;
   }
 }

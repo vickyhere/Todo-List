@@ -32,7 +32,7 @@ export class UsersController {
     @Post('/login')
     login(@Request() req): any {
         return {
-            User: req.user,
+            user: req.user,
             msg: 'User logged in'
         };
     }
