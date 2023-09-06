@@ -1,8 +1,8 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>Home</ion-title>
+		<ion-title>Todo's</ion-title>
 		<ion-buttons slot="primary">
-			<ion-button (click)="addTodo()">
+			<ion-button (click)="openModal()">
 				<ion-icon slot="icon-only" name="add-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
@@ -15,12 +15,11 @@
         <ion-button class="checkbox-icon" color="dark" fill="clear" slot="start" (click)="markComplete(todo)">
           <ion-icon slot="start" [name]="todo.complete ? 'checkbox-outline' : 'square-outline'"></ion-icon>
         </ion-button>
-        <ion-label *ngIf="!todo.isEdit">{{ todo.name }}</ion-label>
-        <input class="form-control" *ngIf="todo.isEdit" (blur)="updatedTodo(todo)" [(ngModel)]="todo.name"/>
-        <ion-button class="delete-icon" fill="clear" slot="end" (click)="todo.isEdit=true">
+        <ion-label>{{ todo.name }}</ion-label>
+        <ion-button class="delete-icon" fill="clear" slot="end" (click)="openModal(todo)">
           <ion-icon color="danger" slot="icon-only" name="create"></ion-icon>
         </ion-button>
-        <ion-button class="delete-icon" fill="clear" slot="end">
+        <ion-button class="delete-icon" fill="clear" slot="end" (click)="deleteTodo(todo._id || '')">
           <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
         </ion-button>
         <ion-reorder slot="end"></ion-reorder>

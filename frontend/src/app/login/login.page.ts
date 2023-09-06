@@ -36,6 +36,7 @@ export class LoginPage {
           if (res.user) {
             const user = res.user as IUser;
             this.storageService.create(user);
+            localStorage.setItem('sessionId',res.session);
             this.router.navigate(['todo']);
             this.toastService.showToast(res.msg, 'success');
           } else {
@@ -51,7 +52,7 @@ export class LoginPage {
   async ngOnInit() {
     const user = await this.storageService.get();
     if (user) {
-      this.router.navigate(['todo']);
+      //this.router.navigate(['todo']);
     }
   }
 

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -12,6 +12,7 @@ import { ApiService } from '../services/api-helper.service';
 import { ToastService } from '../services/toast.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { StorageService } from '../services/storage.service';
+import { SaveTodoModal } from './save-todo/save-todo.modal';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { StorageService } from '../services/storage.service';
     ReactiveFormsModule,
     IonicStorageModule.forRoot()
   ],
-  declarations: [TodoPage],
-  providers: [ToastService, ApiService,StorageService]
+  declarations: [TodoPage,SaveTodoModal],
+  providers: [ToastService, ApiService,StorageService],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TodoPageModule {}

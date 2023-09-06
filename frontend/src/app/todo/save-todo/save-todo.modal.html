@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{todo._id ? 'Update' : 'Add '}} Task
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-button (click)="saveTask()">
+        {{todo._id ? 'Update' : 'Save'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input [(ngModel)]="todo.name" placeholder="Task name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-textarea [(ngModel)]="todo.description" placeholder="Task description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Due Date</ion-label>
+      <input type="date" [(ngModel)]="todo.dueDate" id="dueDate" name="dueDate">
+    </ion-item>
+  </ion-list>
+</ion-content>

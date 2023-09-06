@@ -29,4 +29,16 @@ export class ApiService {
     return this.http.post(url, data, { headers });
   }
 
+  put(endpoint: string, data: any): Observable<any> {
+    const url = `${environment.baseUrl}${endpoint}`;
+    const headers = this.getHeaders();
+    return this.http.put(url, data, { headers });
+  }
+
+  delete(endpoint: string): Observable<any> {
+    const url = `${environment.baseUrl}${endpoint}`;
+    const headers = this.getHeaders();
+    return this.http.delete(url, { headers });
+  }
+
 }

@@ -29,6 +29,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express-session": "^1.17.7",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "express-session": "^1.17.3",
     "mongoose": "^7.5.0",
     "passport": "^0.6.0",

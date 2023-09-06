@@ -1,3 +1,4 @@
 const enum Collection {
-    User = 'user'
+    User = 'user',
+    Todo = 'todo'
 }

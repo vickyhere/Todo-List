@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ItemReorderEventDetail } from '@ionic/angular';
+import { AlertController, ItemReorderEventDetail, ModalController, ModalOptions } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { ITodo } from '../interface/ITodo';
+import { ApiService } from '../services/api-helper.service';
+import { SaveTodoModal } from './save-todo/save-todo.modal';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-todo',
@@ -11,61 +14,92 @@ import { ITodo } from '../interface/ITodo';
 export class TodoPage implements OnInit {
   todos: ITodo[] =[];
 
-  constructor(private storage:Storage,private alertCtrl: AlertController) { }
+  constructor(
+    private storage:Storage,
+    private modalCtrl: ModalController,
+    private apiHelperService:ApiService,
+    private toastService:ToastService) { }
 
   async ngOnInit() {
     this.storage.create();
-  }
-
-  public addTodo(todo=''): void {
-    this.alertCtrl
-      .create({
-        header: "New todo",
-        message: "What are you going to do?",
-        inputs: [
-          {
-            name: "name",
-            placeholder: "Something awesome..."
-          }
-        ],
-        buttons: [
-          {
-            text: "Cancel"
-          },
-          {
-            text: "Continue",
-            handler: (data: { name: string }) => {
-              if (!data.name) {
-                return false;
-              }
-              this.todos.push({ id: 1, complete: false, name: data.name });
-              return data;
-            }
-          }
-        ]
-      })
-      .then(alert => {
-        alert.present();
-      });
+    this.getAllTodos();
   }
 
   markComplete(todo:ITodo){
     todo.complete=!todo.complete;
-  }
-
-  updatedTodo(todo:ITodo){
-    todo.isEdit = false;
+    this.updateTodo(todo);
   }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-    // The `from` and `to` properties contain the index of the item
-    // when the drag started and ended, respectively
-    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+    this.todos = ev.detail.complete(this.todos);
+    this.todos = this.todos.map((todo:ITodo,index:number)=>{
+      todo.order = index;
+      return todo;
+    });
+    this.sortTodos()
+  }
 
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
-    ev.detail.complete();
+  getAllTodos(){
+    this.apiHelperService.get('todo/getAllTodos').subscribe((res:ITodo[])=>{
+      this.todos = res;
+    });
+  }
+
+  saveTodo(todo:ITodo){
+    todo.order = this.getSortOrder();
+    this.apiHelperService.post('todo/save', todo).subscribe((res)=>{
+      this.toastService.showToast(`Todo Added Successfully`,'success');
+      this.getAllTodos();
+    });
+  }
+
+  updateTodo(todo:ITodo){
+    this.apiHelperService.put('todo/update', todo).subscribe((res)=>{
+      this.getAllTodos();
+      this.toastService.showToast(`Todo Updated Successfully`,'success');
+    });
+  }
+
+  deleteTodo(id:string){
+    this.apiHelperService.delete(`todo/delete/${id}`).subscribe((res)=>{
+      this.getAllTodos();
+      this.toastService.showToast(`Todo Deleted Successfully`,'success');
+    });
+  }
+
+  sortTodos(){
+    this.apiHelperService.post('todo/sortTodo', this.todos).subscribe((res)=>{
+      this.getAllTodos();
+    });
+  }
+
+  async openModal(todo?:ITodo) {
+    const modalProp = {
+      component: SaveTodoModal,
+    } as ModalOptions;
+
+    if(todo){
+      modalProp.componentProps = todo;
+    }
+
+    const modal = await this.modalCtrl.create(modalProp);
+    modal.present();
+
+    const item = await modal.onWillDismiss();
+    if (item.data) {
+      if (todo) {
+        //update existing todo
+        this.updateTodo(item.data);
+      }
+      else {
+        //create new todo
+        this.saveTodo(item.data);
+      }
+    }
+  }
+
+  getSortOrder(){
+    return this.todos.length+1;
   }
 
 }

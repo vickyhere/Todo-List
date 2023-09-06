@@ -33,6 +33,7 @@ export class UsersController {
     login(@Request() req): any {
         return {
             user: req.user,
+            session:req.session.id,
             msg: 'User logged in'
         };
     }
