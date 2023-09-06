@@ -15,7 +15,17 @@
         <ion-button class="checkbox-icon" color="dark" fill="clear" slot="start" (click)="markComplete(todo)">
           <ion-icon slot="start" [name]="todo.complete ? 'checkbox-outline' : 'square-outline'"></ion-icon>
         </ion-button>
-        <ion-label>{{ todo.name }}</ion-label>
+        <ion-label>
+          <h2>
+            {{todo.name}}
+          </h2>
+          <p>
+            {{todo.description}}
+          </p>
+          <p>
+            {{todo.dueDate}}
+          </p>
+        </ion-label>
         <ion-button class="delete-icon" fill="clear" slot="end" (click)="openModal(todo)">
           <ion-icon color="danger" slot="icon-only" name="create"></ion-icon>
         </ion-button>
