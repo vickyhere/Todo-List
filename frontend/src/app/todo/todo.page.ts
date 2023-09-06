@@ -5,6 +5,7 @@ import { ITodo } from '../interface/ITodo';
 import { ApiService } from '../services/api-helper.service';
 import { SaveTodoModal } from './save-todo/save-todo.modal';
 import { ToastService } from '../services/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo',
@@ -18,7 +19,8 @@ export class TodoPage implements OnInit {
     private storage:Storage,
     private modalCtrl: ModalController,
     private apiHelperService:ApiService,
-    private toastService:ToastService) { }
+    private toastService:ToastService,
+    private router:Router) { }
 
   async ngOnInit() {
     this.storage.create();
@@ -40,8 +42,12 @@ export class TodoPage implements OnInit {
   }
 
   getAllTodos(){
-    this.apiHelperService.get('todo/getAllTodos').subscribe((res:ITodo[])=>{
-      this.todos = res;
+    this.apiHelperService.get('todo/getAllTodos').subscribe((res)=>{
+      this.todos = res as ITodo[];
+    },(error)=>{
+      if(error.status===403){
+        this.logout();
+      }
     });
   }
 
@@ -100,6 +106,17 @@ export class TodoPage implements OnInit {
 
   getSortOrder(){
     return this.todos.length+1;
+  }
+
+  logout(){
+    this.storage.clear();
+    localStorage.clear();
+    this.apiHelperService.get('users/logout').subscribe((res)=>{
+      if(res){
+        this.toastService.showToast(res.msg,'danger');
+        this.router.navigate(['login'],{replaceUrl:true});
+      }
+    });
   }
 
 }

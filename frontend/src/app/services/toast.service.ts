@@ -12,7 +12,7 @@ export class ToastService {
     const toast = await this.toastController.create({
       message,
       duration: 2000,
-      position: 'top',
+      position: 'bottom',
       color:type,
       buttons: [
         {

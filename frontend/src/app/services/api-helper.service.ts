@@ -20,13 +20,13 @@ export class ApiService {
   get(endpoint: string): Observable<any> {
     const url = `${environment.baseUrl}${endpoint}`;
     const headers = this.getHeaders();
-    return this.http.get(url, { headers });
+    return this.http.get(url, { headers ,withCredentials:true});
   }
 
   post(endpoint: string, data: any): Observable<any> {
     const url = `${environment.baseUrl}${endpoint}`;
     const headers = this.getHeaders();
-    return this.http.post(url, data, { headers });
+    return this.http.post(url, data, { headers ,withCredentials:true});
   }
 
   put(endpoint: string, data: any): Observable<any> {

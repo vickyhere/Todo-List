@@ -25,6 +25,10 @@ export const TodoSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
+    userId: {
+        type: String,
+        required: true,
+    },  
   },
   { timestamps: true }
 )
@@ -36,4 +40,5 @@ export interface Todo extends mongoose.Document {
     description?: number;
     dueDate?: Date;
     order?: number;
+    userId?:string;
 }

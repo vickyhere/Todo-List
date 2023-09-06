@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards,Request, Body, Get, Put, Delete, Param } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Body, Get, Put, Delete, Param } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 import { TodoService } from './todo.service';
 import { Todo } from 'src/models/todo.model';
@@ -7,29 +7,35 @@ import { Todo } from 'src/models/todo.model';
 export class TodoController {
     constructor(private readonly todoService: TodoService) { }
 
-    //@UseGuards(AuthenticatedGuard)
+    @UseGuards(AuthenticatedGuard)
     @Post('save')
-    saveTodo(@Request() req , @Body() todo:Todo): any {
-     return this.todoService.saveTodo(todo);
+    saveTodo(@Request() req, @Body() todo: Todo): any {
+        todo.userId = req.user.id;
+        return this.todoService.saveTodo(todo);
     }
 
+    @UseGuards(AuthenticatedGuard)
     @Get('getAllTodos')
-    getAllTodos() {
-     return this.todoService.getAllTodos();
+    getAllTodos(@Request() req) {
+        return this.todoService.getAllTodos(req.user.id);
     }
 
+    //@UseGuards(AuthenticatedGuard)
     @Put('update')
-    updateTodo(@Request() req , @Body() todo:Todo): any {
-     return this.todoService.updateTodo(todo);
+    updateTodo(@Request() req, @Body() todo: Todo): any {
+        //todo.userId = req.user.id;
+        return this.todoService.updateTodo(todo);
     }
 
+    //@UseGuards(AuthenticatedGuard)
     @Delete('delete/:id')
-    deleteTodo(@Request() req , @Param('id') id): any {
-     return this.todoService.deleteTodo(id);
+    deleteTodo(@Param('id') id): any {
+        return this.todoService.deleteTodo(id);
     }
 
+    @UseGuards(AuthenticatedGuard)
     @Post('sortTodo')
-    sortTodo(@Request() req , @Body() todo:Todo[]): any {
-     return this.todoService.sortTodos(todo);
+    sortTodo(@Body() todo: Todo[]): any {
+        return this.todoService.sortTodos(todo);
     }
 }

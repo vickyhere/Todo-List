@@ -7,8 +7,8 @@ import { Todo } from 'src/models/todo.model';
 export class TodoService {
     constructor(@InjectModel(Collection.Todo) private readonly todoModel: Model<Todo>) {}
 
-    getAllTodos(){
-        return this.todoModel.find({}, null, { sort: { order: 1 } });
+    getAllTodos(userId:string){
+        return this.todoModel.find({userId}, null, { sort: { order: 1 } });
     }
 
     saveTodo(todo:Todo){
